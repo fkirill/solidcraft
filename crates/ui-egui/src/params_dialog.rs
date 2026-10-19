@@ -152,7 +152,11 @@ fn show_value(r: &Row) -> String {
 
 /// Open the dialog (Change Parameters on the toolbar).
 pub fn open(app: &mut SolveApp) {
-    app.params = Some(ParamsDialog::new());
+    let mut dialog = ParamsDialog::new();
+    let unit = crate::length_input::unit(&app.session.doc);
+    dialog.new_unit = UNITS.iter().position(|u| *u == unit).unwrap_or(0);
+    dialog.new_expr = crate::length_input::default(&app.session.doc, "10");
+    app.params = Some(dialog);
 }
 
 /// Cancel before drawing the editors: egui has already blurred the focused TextEdit on Esc,
