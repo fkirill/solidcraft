@@ -230,7 +230,7 @@ fn move_reference_box_selection_can_still_use_an_inactive_body() {
     h.app.start("solid.move");
     {
         let d = h.app.dialog.as_mut().unwrap();
-        d.kind = kind(ROTATE);
+        d.kind = kind(ROTATE, &h.app.session.doc);
         d.inputs = inputs(ROTATE);
         d.inputs[0].items = vec![Sel::Body { name: "Inside".into() }];
         d.active = 1;

@@ -378,7 +378,7 @@ pub(crate) fn along(proj: &Proj, pos: Pos2, base: Vec3, dir: Vec3) -> Option<f64
     Some((b * e - d) / den)
 }
 
-fn format_len(doc: &solidcraft_engine::doc::Document, v: f64) -> String {
+pub(crate) fn format_len(doc: &solidcraft_engine::doc::Document, v: f64) -> String {
     crate::length_input::model(doc, v)
 }
 
