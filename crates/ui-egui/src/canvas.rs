@@ -571,9 +571,20 @@ fn draw(app: &SolveApp, ui: &mut egui::Ui, painter: &egui::Painter, proj: &Proj,
         && let Some(l2) = app.session.doc.eval(distance2, ValueKind::Length).ok().filter(|v| v.is_finite())
     {
         let before = distance2.clone();
-        if let Some(ts) =
-            drag_arrow(ui, painter, proj, base, bs, -n, l2.abs(), false, egui::Id::new("sc_manipulator_offset2"), half_height, distance2)
-        {
+        if let Some(ts) = drag_arrow(
+            &app.session.doc,
+            ui,
+            painter,
+            proj,
+            base,
+            bs,
+            -n,
+            l2.abs(),
+            false,
+            egui::Id::new("sc_manipulator_offset2"),
+            half_height,
+            distance2,
+        ) {
             // Its own area and field, so it does not share Distance's focus or text.
             value_box_in(
                 ui,

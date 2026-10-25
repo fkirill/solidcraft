@@ -76,7 +76,7 @@ fn revolute_joint_uses_the_picked_straight_edges() {
     }
     if let Kind::Assembly(Asm::Joint(f)) = &mut d.kind {
         f.kind = 1;
-        f.fit_limits();
+        f.fit_limits(&app.session.doc);
     }
     for (id, p) in apply_commands(&app, &d).unwrap() {
         app.run(&id, p).unwrap();
