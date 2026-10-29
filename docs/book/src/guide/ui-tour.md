@@ -35,7 +35,10 @@
   an edge in front of a face, overlapping bodies), hold the left button still for half a second
   (long-press on a touch screen) or right-click › **Select Other…**: a list of everything under
   the cursor opens there, including hidden bodies and sketches near the pointer.
-  The popup shows five rows at a time; scroll for more. Picking a hidden object leaves its
+  The popup grows to fit the available window space, opening above the pointer when it needs
+  the extra room, and scrolls only when the rows do not fit. Turn off **Select hidden geometry
+  with Select Other** in Preferences › Sketch & selection to restore the original visible-only
+  list under the pointer. Picking a hidden object leaves its
   visibility unchanged, so an Extrude profile can be chosen through a covering body.
   The sketch being edited comes first. Hovering a row lights it up; clicking it
   selects it (Shift or Ctrl adds), and in a command's dialog it goes to the active selection box.
