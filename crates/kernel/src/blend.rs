@@ -1849,10 +1849,9 @@ pub fn fillet(body: &Body, edges: &[Vec3], radius: f64) -> Result<Body> {
     // A round that would run past its faces into other geometry or another round (#1080).
     // Checked once built, so a refusal of the build itself stands as it is.
     let size = crate::blend_fit::Size::Round(radius);
-    match fillet_built(body, edges, radius) {
-        Ok(b) => crate::blend_fit::accept(body, b, edges, size),
-        Err(e) => Err(crate::blend_fit::explain(body, edges, size, e)),
-    }
+    fillet_built(body, edges, radius)
+        .and_then(|b| crate::blend_fit::accept(body, b, edges, size))
+        .map_err(|e| crate::blend_fit::explain(body, edges, size, e))
 }
 
 /// [`fillet`], once the radius is known to fit.
@@ -2110,10 +2109,9 @@ pub fn chamfer(body: &Body, edges: &[Vec3], distance: f64) -> Result<Body> {
     // A chamfer that would run past its faces into other geometry or another chamfer, or whose
     // result changes more than the chamfers can (#1080).
     let size = crate::blend_fit::Size::Chamfer(distance);
-    match chamfer_built(body, edges, distance) {
-        Ok(b) => crate::blend_fit::accept(body, b, edges, size),
-        Err(e) => Err(crate::blend_fit::explain(body, edges, size, e)),
-    }
+    chamfer_built(body, edges, distance)
+        .and_then(|b| crate::blend_fit::accept(body, b, edges, size))
+        .map_err(|e| crate::blend_fit::explain(body, edges, size, e))
 }
 
 /// [`chamfer`], once the size is known to fit.

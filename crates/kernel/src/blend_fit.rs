@@ -515,14 +515,15 @@ fn check_in(sel: &Selection, size: Size) -> Result<()> {
 /// note names a size the build itself vouched for; inside a verifying build the model's word
 /// stands.
 pub(crate) fn explain(body: &Body, edges: &[Vec3], size: Size, e: KernelError) -> KernelError {
-    let note = match misfit(body, edges, size) {
-        Ok(Some((_, Some(largest)))) if !VERIFYING.with(std::cell::Cell::get) => verified_note(size, largest, body, edges),
-        Ok(Some((_, largest @ Some(_)))) => fits_note(size, largest),
-        _ => return e,
-    };
+    let Ok(Some((_, Some(largest)))) = misfit(body, edges, size) else { return e };
+    let geometric_note = fits_note(size, Some(largest));
+    let note = if VERIFYING.with(std::cell::Cell::get) { geometric_note.clone() } else { verified_note(size, largest, body, edges) };
+    // Acceptance can refuse an otherwise completed build. Replace its geometric suggestion,
+    // rather than leaving an unverified promise before the verified note (or its absence).
+    let message = |m: &str| format!("{}{note}", m.strip_suffix(&geometric_note).unwrap_or(m));
     match e {
-        KernelError::TooLarge(m) => KernelError::TooLarge(format!("{m}{note}")),
-        KernelError::Failed(m) => KernelError::Failed(format!("{m}{note}")),
+        KernelError::TooLarge(m) => KernelError::TooLarge(message(&m)),
+        KernelError::Failed(m) => KernelError::Failed(message(&m)),
         other => other,
     }
 }
